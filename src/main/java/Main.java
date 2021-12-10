@@ -1,4 +1,4 @@
-import Commands.SlashCommands;
+import Commands.SimpleSlashCommands;
 import Events.Call;
 import Events.Ready;
 import net.dv8tion.jda.api.JDA;
@@ -12,8 +12,7 @@ import javax.security.auth.login.LoginException;
 
 public class Main {
     public static void main(String[] args) throws LoginException, InterruptedException {
-        JDABuilder token = JDABuilder.createDefault(args[0],
-                GatewayIntent.GUILD_MESSAGES, GatewayIntent.DIRECT_MESSAGES);
+        JDABuilder token = JDABuilder.createDefault(args[0], GatewayIntent.GUILD_MESSAGES, GatewayIntent.DIRECT_MESSAGES);
 
         // Disable parts of the cache
         token.disableCache(CacheFlag.MEMBER_OVERRIDES, CacheFlag.VOICE_STATE);
@@ -31,7 +30,7 @@ public class Main {
 
         bot.awaitReady();
 
-        bot.addEventListener(new SlashCommands(bot));
+        bot.addEventListener(new SimpleSlashCommands(bot));
 
     }
 }
