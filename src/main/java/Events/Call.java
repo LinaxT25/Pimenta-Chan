@@ -10,8 +10,7 @@ public class Call extends ListenerAdapter {
     public void onMessageReceived(MessageReceivedEvent event) {
         Message message = event.getMessage();
 
-        if(message.getContentRaw().equalsIgnoreCase("Pimenta-Chan") ||
-                message.getMentionedUsers().toString().contains("Pimenta-Chan")) {
+        if(message.getMentionedUsers().toString().contains("Pimenta-Chan")) {
             message.getChannel().sendMessage("Senpai!!!").queue();
         }
     }
