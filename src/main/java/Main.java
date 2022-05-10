@@ -1,4 +1,5 @@
-import Commands.SimpleSlashCommands;
+import Commands.SlashCommandCall;
+import Commands.SlashCommands;
 import Events.Call;
 import Events.Ready;
 import net.dv8tion.jda.api.JDA;
@@ -33,7 +34,8 @@ public class Main {
 
         bot.addEventListener(new Ready(),
                              new Call(),
-                             new SimpleSlashCommands(bot)
+                             new SlashCommands(bot),
+                             new SlashCommandCall()
         );
 
         bot.awaitReady();
