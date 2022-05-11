@@ -11,7 +11,8 @@ public class SlashCommands extends ListenerAdapter {
         CommandListUpdateAction commands = botCommands.updateCommands();
 
         commands.addCommands(
-                Commands.slash("ping", "Returns the latency in ms with pong!"));
+                Commands.slash("ping", "Returns the latency in ms with pong!"),
+                Commands.slash("hello", "Simple Greeting!"));
 
         commands.queue();
 
