@@ -1,3 +1,4 @@
+import Colors.AutoColorRole;
 import Commands.SlashCommandCall;
 import Commands.SlashCommands;
 import Events.Call;
@@ -35,7 +36,8 @@ public class Main {
         bot.addEventListener(new Ready(),
                              new Call(),
                              new SlashCommands(bot),
-                             new SlashCommandCall()
+                             new SlashCommandCall(),
+                             new AutoColorRole()
         );
 
         bot.awaitReady();
