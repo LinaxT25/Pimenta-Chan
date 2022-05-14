@@ -1,9 +1,8 @@
 package Colors;
 
 import net.dv8tion.jda.api.events.guild.GuildJoinEvent;
-import net.dv8tion.jda.api.exceptions.ErrorResponseException;
+import net.dv8tion.jda.api.exceptions.InsufficientPermissionException;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import net.dv8tion.jda.api.requests.ErrorResponse;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
@@ -16,9 +15,25 @@ public class AutoColorRole extends ListenerAdapter {
 
         /* Add a red color to bot when join to the guild */
         try {
-            event.getGuild().createRole().setName("Sexy Red").setColor(Color.RED).setMentionable(false).queue();
-        } catch (ErrorResponseException error) {
-            if(error.getErrorResponse().equals(ErrorResponse.MISSING_PERMISSIONS))
+            event.getGuild().createRole().setName("Sexy Red").setColor(Color.RED).setMentionable(false).complete();
+
+            /* if exists a role then bot will self add the role */
+            if(!(event.getGuild().getRolesByName("Sexy Red", true).isEmpty())) {
+                event.getGuild().addRoleToMember(event.getGuild().getSelfMember(),
+                        event.getGuild()
+                                .getRoles()
+                                .stream()
+                                .filter(role -> role.getName().contains("Sexy Red"))
+                                .findFirst()
+                                .orElseThrow())
+                        .complete();
+            }
+            if(!event.getGuild().getSelfMember().getRoles().stream().anyMatch(role -> role.getName().contains("Sexy Red"))) {
+
+                event.getGuild().getDefaultChannel().sendMessage("I've changed my color to **Sexy Red**, senpai!")
+                        .queue();
+            }
+        } catch (InsufficientPermissionException error) {
                 event.getGuild().getDefaultChannel()
                         .sendMessage("I don't have menage roles permissions, senpai!").queue();
                 event.getGuild().getDefaultChannel()
@@ -27,8 +42,7 @@ public class AutoColorRole extends ListenerAdapter {
                         .sendMessage("Bad Senpai!!! Now you have to change my color personally.").queue();
                 event.getGuild().getDefaultChannel()
                         .sendMessage("Give menage roles permissions then use the sexy red command.").queue();
-                event.getGuild().getDefaultChannel().sendMessage("BAD SENPAI!");
+                event.getGuild().getDefaultChannel().sendMessage("**BAD SENPAI!**").queue();
         }
-
     }
 }
