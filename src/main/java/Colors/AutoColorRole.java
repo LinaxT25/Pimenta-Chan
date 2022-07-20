@@ -3,14 +3,13 @@ package Colors;
 import net.dv8tion.jda.api.events.guild.GuildJoinEvent;
 import net.dv8tion.jda.api.exceptions.InsufficientPermissionException;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 
 public class AutoColorRole extends ListenerAdapter {
 
     @Override
-    public void onGuildJoin(@NotNull GuildJoinEvent event) {
+    public void onGuildJoin(GuildJoinEvent event) {
         super.onGuildJoin(event);
 
         /* Add a red color to bot when join to the guild */
@@ -28,21 +27,22 @@ public class AutoColorRole extends ListenerAdapter {
                                 .orElseThrow())
                         .complete();
             }
-            if(!event.getGuild().getSelfMember().getRoles().stream().anyMatch(role -> role.getName().contains("Sexy Red"))) {
+            if(event.getGuild().getSelfMember().getRoles().stream().anyMatch(role -> role.getName().contains("Sexy Red"))) {
 
-                event.getGuild().getDefaultChannel().sendMessage("I've changed my color to **Sexy Red**, senpai!")
-                        .queue();
+                event.getGuild().getDefaultChannel().asStandardGuildMessageChannel()
+                        .sendMessage("I've changed my color to **Sexy Red**, senpai!").queue();
             }
         } catch (InsufficientPermissionException error) {
-                event.getGuild().getDefaultChannel()
+                event.getGuild().getDefaultChannel().asStandardGuildMessageChannel()
                         .sendMessage("I don't have menage roles permissions, senpai!").queue();
-                event.getGuild().getDefaultChannel()
+                event.getGuild().getDefaultChannel().asStandardGuildMessageChannel()
                         .sendMessage("Without permissions i can't change my color to a sexy red, senpai!!!").queue();
-                event.getGuild().getDefaultChannel()
+                event.getGuild().getDefaultChannel().asStandardGuildMessageChannel()
                         .sendMessage("Bad Senpai!!! Now you have to change my color personally.").queue();
-                event.getGuild().getDefaultChannel()
+                event.getGuild().getDefaultChannel().asStandardGuildMessageChannel()
                         .sendMessage("Give menage roles permissions then use the sexy red command.").queue();
-                event.getGuild().getDefaultChannel().sendMessage("**BAD SENPAI!**").queue();
+                event.getGuild().getDefaultChannel().asStandardGuildMessageChannel().sendMessage("**BAD SENPAI!**")
+                        .queue();
         }
     }
 }

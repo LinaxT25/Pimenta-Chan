@@ -13,7 +13,7 @@ public class Call extends ListenerAdapter {
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
 
-        if(event.getMessage().getMentionedUsers().toString().contains("Pimenta-Chan")) {
+        if(event.getMessage().getMentions().toString().contains("Pimenta-Chan")) {
             event.getChannel().sendMessage("Senpai!!!").queue();
         }
 

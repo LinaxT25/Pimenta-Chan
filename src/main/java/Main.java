@@ -22,7 +22,8 @@ public class Main {
 
         token.disableCache(CacheFlag.MEMBER_OVERRIDES,
                 CacheFlag.VOICE_STATE,
-                CacheFlag.EMOTE
+                CacheFlag.EMOJI,
+                CacheFlag.STICKER
         );
 
         token.setBulkDeleteSplittingEnabled(false);
