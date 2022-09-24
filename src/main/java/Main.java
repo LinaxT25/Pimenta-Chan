@@ -1,5 +1,4 @@
 import Colors.AutoColorRole;
-import Commands.SlashCommandResponse;
 import Commands.SlashCommands;
 import Events.Mentions;
 import Events.Ready;
@@ -34,7 +33,6 @@ public class Main {
         bot.addEventListener(new Ready(),
                              new Mentions(),
                              new SlashCommands(bot),
-                             new SlashCommandResponse(),
                              new AutoColorRole(),
                              new MusicPlayer()
         );
