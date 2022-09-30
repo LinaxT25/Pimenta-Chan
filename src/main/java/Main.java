@@ -20,9 +20,12 @@ public class Main {
                 GatewayIntent.DIRECT_MESSAGES,
                 GatewayIntent.GUILD_VOICE_STATES
         );
-        token.disableCache(CacheFlag.MEMBER_OVERRIDES,
+        token.disableCache(
+                CacheFlag.MEMBER_OVERRIDES,
                 CacheFlag.EMOJI,
-                CacheFlag.STICKER
+                CacheFlag.STICKER,
+                CacheFlag.ACTIVITY,
+                CacheFlag.FORUM_TAGS
         );
         token.setBulkDeleteSplittingEnabled(false);
         token.setCompression(Compression.ZLIB);

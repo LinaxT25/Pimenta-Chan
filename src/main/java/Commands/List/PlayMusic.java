@@ -21,11 +21,16 @@ public class PlayMusic {
                     public void trackLoaded(AudioTrack audioTrack) {
                         event.getChannel().sendMessage("Adding to queue " + audioTrack.getInfo().title).queue();
                         if (!event.getGuild().getAudioManager().isConnected()) {
-                            event.getGuild()
-                                    .getAudioManager()
-                                    .openAudioConnection(event.getInteraction().getMember().getVoiceState().getChannel());
-                            musicManager.scheduler.setQueue(audioTrack);
+                            if(event.getMember().getVoiceState().inAudioChannel()) {
+                                event.getGuild()
+                                        .getAudioManager()
+                                        .openAudioConnection(event.getMember().getVoiceState().getChannel());
+                            } else {
+                                event.getChannel().sendMessage("You're not in a audio channel!");
+                                event.reply("Fails!!!");
+                            }
                         }
+                        musicManager.scheduler.setQueue(audioTrack);
                     }
 
                     @Override
@@ -43,8 +48,8 @@ public class PlayMusic {
                             event.getGuild()
                                     .getAudioManager()
                                     .openAudioConnection(event.getInteraction().getMember().getVoiceState().getChannel());
-                            musicManager.scheduler.setQueue(firstTrack);
                         }
+                        musicManager.scheduler.setQueue(firstTrack);
                     }
 
                     @Override
