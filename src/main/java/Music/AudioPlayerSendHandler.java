@@ -12,8 +12,8 @@ import java.nio.ByteBuffer;
  * provide20MsAudio().
  */
 public class AudioPlayerSendHandler implements AudioSendHandler {
-    private AudioPlayer audioPlayer;
-    private AudioFrame frame;
+    private final AudioPlayer audioPlayer;
+    private AudioFrame lastFrame;
 
     public AudioPlayerSendHandler(AudioPlayer audioPlayer) {
         this.audioPlayer = audioPlayer;
@@ -22,13 +22,13 @@ public class AudioPlayerSendHandler implements AudioSendHandler {
     @Override
     public boolean canProvide() {
         // returns true if audio was provided
-        frame = audioPlayer.provide();
-        return frame != null;
+        lastFrame = audioPlayer.provide();
+        return lastFrame != null;
     }
 
     @Override
     public ByteBuffer provide20MsAudio() {
-        return ByteBuffer.wrap(frame.getData());
+        return ByteBuffer.wrap(lastFrame.getData());
     }
 
     @Override

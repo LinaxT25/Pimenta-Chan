@@ -2,7 +2,7 @@ import Colors.AutoColorRole;
 import Commands.SlashCommands;
 import Events.Mentions;
 import Events.Ready;
-import Music.MusicPlayer;
+import Music.PlayerManager;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
@@ -37,7 +37,7 @@ public class Main {
                              new Mentions(),
                              new SlashCommands(bot),
                              new AutoColorRole(),
-                             new MusicPlayer()
+                             new PlayerManager()
         );
         bot.awaitReady();
     }

@@ -1,66 +1,48 @@
 package Commands.List;
 
-import Music.MusicManager;
-import Music.MusicPlayer;
-import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
-import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
-import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
-import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import Music.AudioLoaderHandler;
+import Music.AudioPlayerSendHandler;
+import Music.PlayerManager;
+import Music.TrackScheduler;
+import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
 public class PlayMusic {
 
     public static void playMusic(SlashCommandInteractionEvent event) {
-        MusicPlayer player = new MusicPlayer();
-        MusicManager musicManager = player.getGuildAudioPlayer(event.getGuild());
+        //Creating a new player manager for all AudioPlayers
+        PlayerManager playerManager = new PlayerManager();
+        //Main instance from AudioPlayer
+        AudioPlayer musicPlayer = playerManager.getAudioPlayerManager().createPlayer();
+        //Creating a scheduler for music queues
+        TrackScheduler trackScheduler = new TrackScheduler(musicPlayer, event.getChannel());
+        //Generating the AudioLoaderHandler for the URLs with will receive.
+        AudioLoaderHandler audioLoaderHandler = new AudioLoaderHandler(trackScheduler);
 
-        player.getPlayerManager().loadItemOrdered(
-                musicManager, event.getOption("url").getAsString(), new AudioLoadResultHandler() {
+         /* If bot is not connected to audio channel then open a connection in channel which the user
+            has made the request if the user not belong a voice channel than close a request  */
+        if (!event.getGuild().getAudioManager().isConnected()) {
+            if(event.getMember().getVoiceState().inAudioChannel()) {
+                event.getGuild()
+                        .getAudioManager()
+                        .openAudioConnection(event.getMember().getVoiceState().getChannel());
 
-                    @Override
-                    public void trackLoaded(AudioTrack audioTrack) {
-                        event.getChannel().sendMessage("Adding to queue " + audioTrack.getInfo().title).queue();
-                        if (!event.getGuild().getAudioManager().isConnected()) {
-                            if(event.getMember().getVoiceState().inAudioChannel()) {
-                                event.getGuild()
-                                        .getAudioManager()
-                                        .openAudioConnection(event.getMember().getVoiceState().getChannel());
-                            } else {
-                                event.getChannel().sendMessage("You're not in a audio channel!");
-                                event.reply("Fails!!!");
-                            }
-                        }
-                        musicManager.scheduler.setQueue(audioTrack);
-                    }
+                event.getGuild()
+                        .getAudioManager()
+                        .setSendingHandler(new AudioPlayerSendHandler(musicPlayer));
 
-                    @Override
-                    public void playlistLoaded(AudioPlaylist audioPlaylist) {
-                        AudioTrack firstTrack = audioPlaylist.getSelectedTrack();
+                playerManager.getAudioPlayerManager()
+                        .loadItemOrdered(musicPlayer, event.getOption("url").getAsString(), audioLoaderHandler);
 
-                        if (firstTrack == null) {
-                            firstTrack = audioPlaylist.getTracks().get(0);
-                        }
+                event.reply("Adding to queue: " +  event.getOption("url").getAsString()).queue();
+            } else {
+                event.reply("You're not in a audio channel!").closeResources().complete();
+            }
+        } else {
+            playerManager.getAudioPlayerManager()
+                    .loadItemOrdered(musicPlayer, event.getOption("url").getAsString(), audioLoaderHandler);
 
-                        event.getChannel().sendMessage("Adding to queue " + firstTrack.getInfo().title
-                                + " (first track of playlist " + audioPlaylist.getName() + ")").queue();
-
-                        if (!event.getGuild().getAudioManager().isConnected()) {
-                            event.getGuild()
-                                    .getAudioManager()
-                                    .openAudioConnection(event.getInteraction().getMember().getVoiceState().getChannel());
-                        }
-                        musicManager.scheduler.setQueue(firstTrack);
-                    }
-
-                    @Override
-                    public void noMatches() {
-                        event.getChannel().sendMessage("Nothing found by " + event.getOption("url").getAsString()).queue();
-                    }
-
-                    @Override
-                    public void loadFailed(FriendlyException e) {
-                        event.getChannel().sendMessage("Could not play: " + e.getMessage()).queue();
-                    }
-                });
+            event.reply("Adding to queue: " + event.getOption("url").getAsString()).queue();
+        }
     }
 }
