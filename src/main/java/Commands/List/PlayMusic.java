@@ -8,18 +8,15 @@ import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
 public class PlayMusic {
-    /* Creating a new player manager for all AudioPlayers. */
-    private PlayerManager playerManager;
     /* Main instance from AudioPlayer. */
-    private AudioPlayer musicPlayer;
+    private final AudioPlayer musicPlayer;
     /* Creating a scheduler for music queues. */
-    private TrackScheduler trackScheduler;
+    private final TrackScheduler trackScheduler;
     /* Generating the AudioLoaderHandler for the URLs with will receive. */
-    private AudioLoaderHandler audioLoaderHandler;
+    private final AudioLoaderHandler audioLoaderHandler;
 
     public PlayMusic() {
-        this.playerManager = new PlayerManager();
-        this.musicPlayer = playerManager.getAudioPlayerManager().createPlayer();
+        this.musicPlayer = PlayerManager.getAudioPlayerManager().createPlayer();
         this.trackScheduler = new TrackScheduler(musicPlayer);
         this.musicPlayer.addListener(trackScheduler);
         this.audioLoaderHandler = new AudioLoaderHandler(trackScheduler);
@@ -38,17 +35,19 @@ public class PlayMusic {
                         .getAudioManager()
                         .setSendingHandler(new AudioPlayerSendHandler(musicPlayer));
 
-                playerManager.getAudioPlayerManager()
-                        .loadItemOrdered(musicPlayer, event.getOption("url").getAsString(), audioLoaderHandler);
+                trackScheduler.catchEvent(event);
 
-                trackScheduler.setChannel(event);
+                PlayerManager.getAudioPlayerManager()
+                        .loadItemOrdered(musicPlayer, event.getOption("url").getAsString(), audioLoaderHandler);
 
                 event.reply("Adding to queue: " +  event.getOption("url").getAsString()).queue();
             } else {
                 event.reply("You're not in a audio channel!").closeResources().complete();
             }
         } else {
-            playerManager.getAudioPlayerManager()
+            trackScheduler.catchEvent(event);
+
+            PlayerManager.getAudioPlayerManager()
                     .loadItemOrdered(musicPlayer, event.getOption("url").getAsString(), audioLoaderHandler);
 
             event.reply("Adding to queue: " + event.getOption("url").getAsString()).queue();

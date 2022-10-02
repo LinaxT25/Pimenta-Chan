@@ -33,11 +33,11 @@ public class Main {
         token.setActivity(Activity.playing("\uD83C\uDF36 Pimenta-Chan \uD83C\uDF36"));
         token.setStatus(OnlineStatus.ONLINE);
         JDA bot = token.build();
-        bot.addEventListener(new Ready(),
-                             new Mentions(),
+        bot.addEventListener(new Mentions(),
+                             new PlayerManager(),
                              new SlashCommands(bot),
                              new AutoColorRole(),
-                             new PlayerManager()
+                             new Ready()
         );
         bot.awaitReady();
     }
