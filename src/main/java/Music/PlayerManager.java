@@ -27,5 +27,4 @@ public class PlayerManager extends ListenerAdapter {
     public static AudioPlayerManager getAudioPlayerManager() {
         return playerManager;
     }
-
 }

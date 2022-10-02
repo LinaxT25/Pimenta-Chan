@@ -42,7 +42,7 @@ public class PlayMusic {
 
                 event.reply("Adding to queue: " +  event.getOption("url").getAsString()).queue();
             } else {
-                event.reply("You're not in a audio channel!").closeResources().complete();
+                event.reply("You're not in a audio channel!").closeResources().queue();
             }
         } else {
             trackScheduler.catchEvent(event);
@@ -56,6 +56,11 @@ public class PlayMusic {
 
     public void nextTrack(SlashCommandInteractionEvent event) {
         trackScheduler.playNext();
-        event.reply("Playing next track: " + musicPlayer.getPlayingTrack().getInfo().title).queue();
+        event.reply("Ok, SENPAI!!!").queue();
+    }
+
+    public void stopTrack(SlashCommandInteractionEvent event) {
+        trackScheduler.stopTrack();
+        event.reply("I've stopped the track and emptied the queue too, senpai!!").queue();
     }
 }

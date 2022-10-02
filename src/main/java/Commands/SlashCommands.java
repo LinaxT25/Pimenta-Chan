@@ -5,6 +5,7 @@ import Commands.List.Ping;
 import Commands.List.PlayMusic;
 import Commands.List.SexyRed;
 import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions;
@@ -13,14 +14,18 @@ import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.requests.restaction.CommandListUpdateAction;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class SlashCommands extends ListenerAdapter {
     private static ArrayList<String> commandList;
-    private PlayMusic playMusic = new PlayMusic(); //Music cannot be a static so an object is needed.
+    private Map<Guild, PlayMusic> playMusicGuilds;
 
     public SlashCommands(JDA botCommands) {
         CommandListUpdateAction commands = botCommands.updateCommands();
+        playMusicGuilds = new HashMap<>();
+        commandsList();
 
         commands.addCommands(
                 Commands.slash("ping", "Returns the latency in ms with pong!")
@@ -30,6 +35,8 @@ public class SlashCommands extends ListenerAdapter {
                 Commands.slash("play","Play music from provided URL.")
                         .setGuildOnly(true)
                         .addOption(OptionType.STRING, "url", "Music URL.", true),
+                Commands.slash("stop", "Stop the track playing")
+                        .setGuildOnly(true),
                 Commands.slash("next-track","Next track from the queue.")
                         .setGuildOnly(true),
                 Commands.slash("sexy-red", "If bot doesn't have red color, use this.")
@@ -38,46 +45,46 @@ public class SlashCommands extends ListenerAdapter {
         commands.queue();
     }
 
-    private void commandsList(SlashCommandInteractionEvent event) {
-        commandList = new ArrayList<String>() {
+    private void commandsList() {
+        commandList = new ArrayList<>() {
             {
                 add("ping");
                 add("hello");
-                add("sexy-red");
                 add("play");
+                add("stop");
                 add("next-track");
+                add("sexy-red");
             }
         };
     }
 
     @Override
     public void onSlashCommandInteraction(SlashCommandInteractionEvent eventListener) {
-        /* On a call to invoke commands initialize a list of commands */
-        commandsList(eventListener);
+        //Storing guilds to mapping for consistency
+        if(!playMusicGuilds.containsKey(eventListener.getGuild()))
+            playMusicGuilds.put(eventListener.getGuild(), new PlayMusic());
 
-        /* Only guild can invoke slash commands */
-        if(eventListener.getGuild() == null) {
-            eventListener.getInteraction().reply("You're not a guild user! I don`t obey your commands!");
-            return;
-        }
         /* Calling the method in response to event */
-        for(int i = 0; i < commandList.size(); i++) {
-            if(Objects.equals(commandList.get(i), eventListener.getName())) {
-                switch (commandList.get(i)) {
-                    case "ping" :
+        for (String s : commandList) {
+            if (Objects.equals(s, eventListener.getName())) {
+                switch (s) {
+                    case "play":
+                        playMusicGuilds.get(eventListener.getGuild()).playTrack(eventListener);
+                        break;
+                    case "next-track":
+                        playMusicGuilds.get(eventListener.getGuild()).nextTrack(eventListener);
+                        break;
+                    case "stop":
+                        playMusicGuilds.get(eventListener.getGuild()).stopTrack(eventListener);
+                        break;
+                    case "ping":
                         Ping.ping(eventListener);
                         break;
-                    case "hello" :
+                    case "hello":
                         Hello.hello(eventListener);
                         break;
                     case "sexy-red":
                         SexyRed.sexyRed(eventListener);
-                        break;
-                    case "play":
-                        playMusic.playTrack(eventListener);
-                        break;
-                    case "next-track":
-                        playMusic.nextTrack(eventListener);
                         break;
                 }
             }

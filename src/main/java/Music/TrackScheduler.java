@@ -23,25 +23,27 @@ public class TrackScheduler extends AudioEventAdapter {
     public void queue(AudioTrack track) {
         if(audioPlayer.getPlayingTrack() == null) {
             queue.offer(track);
-            playTrack();
+            audioPlayer.playTrack(queue.poll());
         } else {
             queue.offer(track);
         }
     }
 
-    public void playTrack() {
-        audioPlayer.playTrack(queue.poll());
-    }
-
     public void playNext() {
         if(audioPlayer.getPlayingTrack() != null) {
             audioPlayer.stopTrack();
-            playTrack();
+            audioPlayer.playTrack(queue.poll());
         } else {
-            playTrack();
+            audioPlayer.playTrack(queue.poll());
         }
     }
 
+    public void stopTrack() {
+        audioPlayer.stopTrack();
+        for(AudioTrack index : queue) {
+            queue.remove(index);
+        }
+    }
     public void catchEvent(SlashCommandInteractionEvent event) {
         this.event = event;
     }

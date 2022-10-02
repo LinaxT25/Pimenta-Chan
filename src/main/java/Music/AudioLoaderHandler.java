@@ -29,16 +29,16 @@ public class AudioLoaderHandler implements AudioLoadResultHandler {
     @Override
     public void noMatches() {
         this.event = trackScheduler.getEvent();
-        event.reply("None matches founded with source provided, Senpai!")
-                .closeResources()
+        event.getChannel()
+                .sendMessage("None matches founded with source provided, Senpai!")
                 .queue();
     }
 
     @Override
     public void loadFailed(FriendlyException e) {
         this.event = trackScheduler.getEvent();
-        event.reply("Emergency Senpai!!!!, I've received errors closing all resources.")
-                .closeResources()
+        event.getChannel()
+                .sendMessage("Emergency Senpai!!!! \n I've received errors, closing all resources.")
                 .queue();
         throw e;
     }
