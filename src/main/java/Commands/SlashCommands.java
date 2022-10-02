@@ -12,11 +12,12 @@ import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.requests.restaction.CommandListUpdateAction;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.Objects;
 
 public class SlashCommands extends ListenerAdapter {
-    private Map<String, Runnable> commandsMap;
+    private static ArrayList<String> commandList;
+    private PlayMusic playMusic = new PlayMusic(); //Music cannot be a static so an object is needed.
 
     public SlashCommands(JDA botCommands) {
         CommandListUpdateAction commands = botCommands.updateCommands();
@@ -29,19 +30,24 @@ public class SlashCommands extends ListenerAdapter {
                 Commands.slash("play","Play music from provided URL.")
                         .setGuildOnly(true)
                         .addOption(OptionType.STRING, "url", "Music URL.", true),
-                Commands.slash("sexyred", "If bot doesn't have red color, use this.")
+                Commands.slash("next-track","Next track from the queue.")
+                        .setGuildOnly(true),
+                Commands.slash("sexy-red", "If bot doesn't have red color, use this.")
                         .setGuildOnly(true)
                         .setDefaultPermissions(DefaultMemberPermissions.DISABLED));
         commands.queue();
     }
 
     private void commandsList(SlashCommandInteractionEvent event) {
-        commandsMap = new HashMap<>();
-
-        commandsMap.put("ping", () -> Ping.ping(event));
-        commandsMap.put("hello", () -> Hello.hello(event));
-        commandsMap.put("sexyred", () -> SexyRed.sexyRed(event));
-        commandsMap.put("play", () -> PlayMusic.playMusic(event));
+        commandList = new ArrayList<String>() {
+            {
+                add("ping");
+                add("hello");
+                add("sexy-red");
+                add("play");
+                add("next-track");
+            }
+        };
     }
 
     @Override
@@ -55,12 +61,27 @@ public class SlashCommands extends ListenerAdapter {
             return;
         }
         /* Calling the method in response to event */
-        if(commandsMap.containsKey(eventListener.getName()))
-            commandsMap.get(eventListener.getName()).run();
-        else
-            eventListener.getChannel()
-                    .sendMessage("Bad news SENPAI!!! No method call for this command found.")
-                    .queue();
+        for(int i = 0; i < commandList.size(); i++) {
+            if(Objects.equals(commandList.get(i), eventListener.getName())) {
+                switch (commandList.get(i)) {
+                    case "ping" :
+                        Ping.ping(eventListener);
+                        break;
+                    case "hello" :
+                        Hello.hello(eventListener);
+                        break;
+                    case "sexy-red":
+                        SexyRed.sexyRed(eventListener);
+                        break;
+                    case "play":
+                        playMusic.playTrack(eventListener);
+                        break;
+                    case "next-track":
+                        playMusic.nextTrack(eventListener);
+                        break;
+                }
+            }
+        }
     }
 }
 

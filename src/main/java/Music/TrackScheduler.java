@@ -6,6 +6,7 @@ import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
 import net.dv8tion.jda.api.entities.channel.unions.MessageChannelUnion;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -16,18 +17,34 @@ public class TrackScheduler extends AudioEventAdapter {
     private AudioPlayer audioPlayer;
     private MessageChannelUnion messageChannelUnion;
 
-    public TrackScheduler(AudioPlayer audioPlayer, MessageChannelUnion messageChannelUnion) {
-        this.messageChannelUnion = messageChannelUnion;
+    public TrackScheduler(AudioPlayer audioPlayer) {
         this.audioPlayer = audioPlayer;
     }
 
     public void queue(AudioTrack track) {
-        queue.offer(track);
-        playTrack();
+        if(audioPlayer.getPlayingTrack() == null) {
+            queue.offer(track);
+            playTrack();
+        } else {
+            queue.offer(track);
+        }
     }
 
     public void playTrack() {
         audioPlayer.playTrack(queue.poll());
+    }
+
+    public void playNext() {
+        if(audioPlayer.getPlayingTrack() != null) {
+            audioPlayer.stopTrack();
+            playTrack();
+        } else {
+            playTrack();
+        }
+    }
+
+    public void setChannel(SlashCommandInteractionEvent event) {
+        messageChannelUnion = event.getChannel();
     }
 
     @Override

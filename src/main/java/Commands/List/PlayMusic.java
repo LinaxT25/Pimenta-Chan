@@ -8,19 +8,26 @@ import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
 public class PlayMusic {
+    /* Creating a new player manager for all AudioPlayers. */
+    private PlayerManager playerManager;
+    /* Main instance from AudioPlayer. */
+    private AudioPlayer musicPlayer;
+    /* Creating a scheduler for music queues. */
+    private TrackScheduler trackScheduler;
+    /* Generating the AudioLoaderHandler for the URLs with will receive. */
+    private AudioLoaderHandler audioLoaderHandler;
 
-    public static void playMusic(SlashCommandInteractionEvent event) {
-        //Creating a new player manager for all AudioPlayers
-        PlayerManager playerManager = new PlayerManager();
-        //Main instance from AudioPlayer
-        AudioPlayer musicPlayer = playerManager.getAudioPlayerManager().createPlayer();
-        //Creating a scheduler for music queues
-        TrackScheduler trackScheduler = new TrackScheduler(musicPlayer, event.getChannel());
-        //Generating the AudioLoaderHandler for the URLs with will receive.
-        AudioLoaderHandler audioLoaderHandler = new AudioLoaderHandler(trackScheduler);
+    public PlayMusic() {
+        this.playerManager = new PlayerManager();
+        this.musicPlayer = playerManager.getAudioPlayerManager().createPlayer();
+        this.trackScheduler = new TrackScheduler(musicPlayer);
+        this.musicPlayer.addListener(trackScheduler);
+        this.audioLoaderHandler = new AudioLoaderHandler(trackScheduler);
+    }
 
-         /* If bot is not connected to audio channel then open a connection in channel which the user
-            has made the request if the user not belong a voice channel than close a request  */
+    public void playTrack(SlashCommandInteractionEvent event) {
+       /* If bot is not connected to audio channel then open a connection in channel which the user
+       has made the request if the user not belong a voice channel than close a request  */
         if (!event.getGuild().getAudioManager().isConnected()) {
             if(event.getMember().getVoiceState().inAudioChannel()) {
                 event.getGuild()
@@ -44,5 +51,10 @@ public class PlayMusic {
 
             event.reply("Adding to queue: " + event.getOption("url").getAsString()).queue();
         }
+    }
+
+    public void nextTrack(SlashCommandInteractionEvent event) {
+        trackScheduler.playNext();
+        event.reply("Playing next track: " + musicPlayer.getPlayingTrack().getInfo().title).queue();
     }
 }

@@ -6,7 +6,7 @@ import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
 public class AudioLoaderHandler implements AudioLoadResultHandler {
-    private TrackScheduler trackScheduler;
+    private final TrackScheduler trackScheduler;
 
     public AudioLoaderHandler(TrackScheduler trackScheduler) {
         this.trackScheduler = trackScheduler;
