@@ -41,7 +41,7 @@ public class TrackScheduler extends AudioEventAdapter {
         } else {
             playTrack();
         }
-    }
+    }gi
 
     public void setChannel(SlashCommandInteractionEvent event) {
         messageChannelUnion = event.getChannel();
