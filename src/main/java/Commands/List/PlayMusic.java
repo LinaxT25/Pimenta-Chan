@@ -41,6 +41,8 @@ public class PlayMusic {
                 playerManager.getAudioPlayerManager()
                         .loadItemOrdered(musicPlayer, event.getOption("url").getAsString(), audioLoaderHandler);
 
+                trackScheduler.setChannel(event);
+
                 event.reply("Adding to queue: " +  event.getOption("url").getAsString()).queue();
             } else {
                 event.reply("You're not in a audio channel!").closeResources().complete();
