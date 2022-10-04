@@ -5,12 +5,11 @@ import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class PlayerManager extends ListenerAdapter {
     private static AudioPlayerManager playerManager;
-    private Logger logger = Logger.getLogger(PlayerManager.class.getName());
+    private final Logger logger = Logger.getLogger(PlayerManager.class.getName());
 
     public PlayerManager() {
         playerManager = new DefaultAudioPlayerManager();
@@ -20,8 +19,8 @@ public class PlayerManager extends ListenerAdapter {
         playerManager.setPlayerCleanupThreshold(60000);
         //When no data from a playing track comes in the specified time, an event is sent.
         playerManager.setTrackStuckThreshold(30000);
-        playerManager.setFrameBufferDuration(400);
-        logger.log(Level.INFO, String.valueOf(playerManager.getFrameBufferDuration()));
+        playerManager.setFrameBufferDuration(600);
+        logger.info(String.valueOf("Buffer current is: " + playerManager.getFrameBufferDuration() + "ms"));
     }
 
     public static AudioPlayerManager getAudioPlayerManager() {

@@ -90,6 +90,23 @@ public class TrackScheduler extends AudioEventAdapter {
         if(endReason.mayStartNext) {
             audioPlayer.playTrack(queue.poll());
         }
+
+        //Time disconnect not used for now.
+        /*if(queue.isEmpty()) {
+            event.getChannel()
+                    .sendMessage("**In 1 minute i'll disconnect.**")
+                    .delay(Duration.ofSeconds(60))
+                    .flatMap(verification -> {
+                        if(!queue.isEmpty()) {
+                            audioPlayer.playTrack(queue.poll());
+                        } else {
+                            event.getGuild().getAudioManager().closeAudioConnection();
+                        }
+                        verification.editMessage("Bye bye Senpai!!!");
+                        return null;
+                    }).queue();
+        }
+        */
     }
 
     @Override
