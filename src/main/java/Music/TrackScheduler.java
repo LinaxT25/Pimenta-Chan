@@ -5,8 +5,11 @@ import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
+import java.awt.*;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -66,7 +69,12 @@ public class TrackScheduler extends AudioEventAdapter {
 
     @Override
     public void onTrackStart(AudioPlayer player, AudioTrack track) {
-        event.getChannel().sendMessage("Playing now: " + track.getInfo().title).queue();
+        MessageEmbed messageEmbed = new EmbedBuilder()
+                .setColor(Color.red)
+                .setDescription("Playing now: " + track.getInfo().title)
+                .build();
+
+        event.getChannel().sendMessageEmbeds(messageEmbed).queue();
     }
 
     @Override
@@ -79,7 +87,7 @@ public class TrackScheduler extends AudioEventAdapter {
          * endReason == CLEANUP: Player hasn't been queried for a while, if you want you can put a
                                   clone of this back to your queue */
 
-        if (endReason.mayStartNext) {
+        if(endReason.mayStartNext) {
             audioPlayer.playTrack(queue.poll());
         }
     }

@@ -1,5 +1,6 @@
 import Colors.AutoColorRole;
 import Commands.SlashCommands;
+import Events.GuildVoiceDisconnect;
 import Events.Mentions;
 import Events.Ready;
 import Music.PlayerManager;
@@ -35,6 +36,7 @@ public class Main {
         JDA bot = token.build();
         bot.addEventListener(new PlayerManager(),
                              new SlashCommands(bot),
+                             new GuildVoiceDisconnect(bot),
                              new Mentions(),
                              new AutoColorRole(),
                              new Ready()

@@ -61,6 +61,7 @@ public class PlayMusic {
 
     public void stopTrack(SlashCommandInteractionEvent event) {
         trackScheduler.stopTrack();
+        event.getGuild().getAudioManager().closeAudioConnection();
         event.reply("I've stopped the track and emptied the queue too, senpai!!").queue();
     }
 }
