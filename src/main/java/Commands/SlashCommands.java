@@ -27,6 +27,9 @@ public class SlashCommands extends ListenerAdapter {
         playMusicGuilds = new HashMap<>();
         commandsList();
 
+        //TODO
+        //Recommendations from myanimelist
+
         commands.addCommands(
                 Commands.slash("ping", "Returns the latency in ms with pong!")
                         .setGuildOnly(true),

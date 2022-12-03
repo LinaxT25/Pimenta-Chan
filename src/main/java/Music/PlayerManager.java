@@ -20,7 +20,7 @@ public class PlayerManager extends ListenerAdapter {
         //When no data from a playing track comes in the specified time, an event is sent.
         playerManager.setTrackStuckThreshold(30000);
         playerManager.setFrameBufferDuration(600);
-        logger.info(String.valueOf("Buffer current is: " + playerManager.getFrameBufferDuration() + "ms"));
+        logger.info("Buffer current is: " + playerManager.getFrameBufferDuration() + "ms");
     }
 
     public static AudioPlayerManager getAudioPlayerManager() {

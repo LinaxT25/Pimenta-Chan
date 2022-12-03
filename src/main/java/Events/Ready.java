@@ -1,7 +1,7 @@
 package Events;
 
 import net.dv8tion.jda.api.events.GenericEvent;
-import net.dv8tion.jda.api.events.ReadyEvent;
+import net.dv8tion.jda.api.events.session.ReadyEvent;
 import net.dv8tion.jda.api.hooks.EventListener;
 
 import java.util.logging.Logger;
@@ -12,7 +12,10 @@ public class Ready implements EventListener {
 
     @Override
     public void onEvent(GenericEvent event) {
-        if(event instanceof ReadyEvent)
-            logger.info("API is ready!");
+        if(event instanceof ReadyEvent) {
+            logger.info("API is ready!" +
+            "\nConnect to: " + event.getJDA().getGuilds() +
+            "\nTotal of guilds: " + ((ReadyEvent) event).getGuildTotalCount());
+        }
     }
 }
