@@ -31,7 +31,7 @@ public class SexyRed {
 
             event.reply("I've changed my color to **Sexy Red**, senpai!").queue();
 
-        }catch(InsufficientPermissionException error) {
+        } catch (InsufficientPermissionException error) {
             event.getGuild().getDefaultChannel().asStandardGuildMessageChannel()
                     .sendMessage("I don't have menage roles permissions, senpai!")
                     .queue();

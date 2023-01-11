@@ -1,5 +1,5 @@
 import Colors.AutoColorRole;
-import Commands.SlashCommands;
+import Commands.Core.CommandCall;
 import Events.GuildVoiceDisconnect;
 import Events.Mentions;
 import Events.Ready;
@@ -24,7 +24,8 @@ public class Main {
                 CacheFlag.EMOJI,
                 CacheFlag.STICKER,
                 CacheFlag.ACTIVITY,
-                CacheFlag.FORUM_TAGS
+                CacheFlag.FORUM_TAGS,
+                CacheFlag.SCHEDULED_EVENTS
         );
         token.setBulkDeleteSplittingEnabled(false);
         token.setCompression(Compression.ZLIB);
@@ -33,7 +34,7 @@ public class Main {
         token.setStatus(OnlineStatus.ONLINE);
         JDA bot = token.build();
         bot.addEventListener(new PlayerManager(),
-                             new SlashCommands(bot),
+                             new CommandCall(bot),
                              new GuildVoiceDisconnect(bot),
                              new Mentions(),
                              new AutoColorRole(),
