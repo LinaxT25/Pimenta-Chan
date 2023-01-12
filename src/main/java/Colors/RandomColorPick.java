@@ -4,9 +4,9 @@ import java.awt.*;
 import java.util.HashMap;
 
 public class RandomColorPick {
-     private HashMap<Integer, Color> colorPickup = new HashMap<>();
+     private final static HashMap<Integer, Color> colorPickup = new HashMap<>();
 
-    public RandomColorPick() {
+    public static void Colors() {
         colorPickup.put(0,Color.red);
         colorPickup.put(1,Color.black);
         colorPickup.put(2,Color.blue);
@@ -23,7 +23,9 @@ public class RandomColorPick {
         colorPickup.put(13,Color.orange);
     }
 
-    public Color getColor(int random) {
+    public static Color getColor(int random) {
+        Colors(); //Instantiate the hashmap to not get null error
         return colorPickup.get(random);
     }
+
 }

@@ -1,3 +1,4 @@
+import BD.DBConnection;
 import Colors.AutoColorRole;
 import Commands.Core.CommandCall;
 import Events.GuildVoiceDisconnect;
@@ -14,6 +15,7 @@ import net.dv8tion.jda.api.utils.cache.CacheFlag;
 
 public class Main {
     public static void main(String[] args) throws InterruptedException {
+        DBConnection startDBConnection = new DBConnection();
         JDABuilder token = JDABuilder.createDefault(args[0],
                 GatewayIntent.GUILD_MESSAGES,
                 GatewayIntent.DIRECT_MESSAGES,

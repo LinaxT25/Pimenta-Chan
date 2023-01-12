@@ -22,6 +22,8 @@ public class CommandCall extends ListenerAdapter {
     public CommandCall(JDA bot) {
         SlashCommands slashCommands = new SlashCommands(bot); //Updating all commands
 
+        //TODO Ban with time
+
         commandList.add("ping");
         commandList.add("hello");
         commandList.add("play");
