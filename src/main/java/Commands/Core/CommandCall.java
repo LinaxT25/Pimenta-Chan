@@ -23,6 +23,9 @@ public class CommandCall extends ListenerAdapter {
         SlashCommands slashCommands = new SlashCommands(bot); //Updating all commands
 
         //TODO Ban with time
+        //TODO Auto commands
+        //TODO Reverse image search
+        //TODO Guild lock commands
 
         commandList.add("ping");
         commandList.add("hello");

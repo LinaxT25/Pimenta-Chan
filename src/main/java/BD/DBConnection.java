@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
+import java.util.logging.Logger;
 
 public class DBConnection {
     private Connection connection;
@@ -16,7 +17,8 @@ public class DBConnection {
             String urlDB = "jdbc:postgresql://localhost/Discord";
             connection = DriverManager.getConnection(urlDB, properties);
         } catch (SQLException sqlException) {
-            System.out.println(sqlException.getMessage());
+            Logger logger = Logger.getLogger(DBConnection.class.getName());
+            logger.severe(sqlException.getMessage());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

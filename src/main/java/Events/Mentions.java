@@ -1,6 +1,5 @@
 package Events;
 
-import net.dv8tion.jda.api.entities.channel.ChannelType;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
@@ -12,10 +11,10 @@ public class Mentions extends ListenerAdapter {
         if(event.getMessage().getMentions().toString().contains("Pimenta-Chan")) {
             event.getChannel().sendMessage("Senpai!!!").queue();
         }
-        //Creating a file with received private messages
-        if(event.isFromType(ChannelType.PRIVATE)) {
-            // Removed to prevent any security breach
-            /*
+
+        // Removed to prevent any security breach
+         /*Creating a file with received private messages
+            if(event.isFromType(ChannelType.PRIVATE)) {
             try {
                 File LogMessages = new File("MessagesReceived.txt");
                 FileWriter WritingContents =  new FileWriter("MessagesReceived.txt",true);
@@ -35,7 +34,6 @@ public class Mentions extends ListenerAdapter {
                 System.out.println("A error occurred.");
                 error.printStackTrace();
             }
-            */
-        }
+        }*/
     }
 }

@@ -14,16 +14,16 @@ import net.dv8tion.jda.api.utils.Compression;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 
 public class Main {
+    //TODO if the bot scale up a rebuild is needed to implement sharding
     public static void main(String[] args) throws InterruptedException {
         DBConnection startDBConnection = new DBConnection();
         JDABuilder token = JDABuilder.createDefault(args[0],
                 GatewayIntent.GUILD_MESSAGES,
-                GatewayIntent.DIRECT_MESSAGES,
-                GatewayIntent.GUILD_VOICE_STATES
+                GatewayIntent.GUILD_MESSAGE_REACTIONS,
+                GatewayIntent.GUILD_VOICE_STATES,
+                GatewayIntent.GUILD_BANS
         );
         token.disableCache(
-                CacheFlag.MEMBER_OVERRIDES,
-                CacheFlag.EMOJI,
                 CacheFlag.STICKER,
                 CacheFlag.ACTIVITY,
                 CacheFlag.FORUM_TAGS,
@@ -32,6 +32,7 @@ public class Main {
         token.setBulkDeleteSplittingEnabled(false);
         token.setCompression(Compression.ZLIB);
         token.setAutoReconnect(true);
+        token.setEnableShutdownHook(true);
         token.setActivity(Activity.playing("\uD83C\uDF36 Pimenta-Chan \uD83C\uDF36"));
         token.setStatus(OnlineStatus.ONLINE);
         JDA bot = token.build();

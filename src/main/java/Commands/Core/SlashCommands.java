@@ -27,8 +27,7 @@ public class SlashCommands  {
                         .setGuildOnly(true)
                         .setNSFW(true)
                         .addOption(OptionType.STRING, "tag", "Tag for the search.",true)
-                        .addOption(OptionType.STRING, "number", "Number of images.",true)
-                        .addOption(OptionType.BOOLEAN,"nsfw","Toggle nsfw only."))
+                        .addOption(OptionType.STRING, "number", "Number of images.",true))
                 .queue();
     }
 }

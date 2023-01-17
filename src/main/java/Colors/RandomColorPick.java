@@ -7,6 +7,7 @@ public class RandomColorPick {
      private final static HashMap<Integer, Color> colorPickup = new HashMap<>();
 
     public static void Colors() {
+        Color lemon = new Color(183,233,113);
         colorPickup.put(0,Color.red);
         colorPickup.put(1,Color.black);
         colorPickup.put(2,Color.blue);
@@ -21,6 +22,7 @@ public class RandomColorPick {
         colorPickup.put(11,Color.yellow);
         colorPickup.put(12,Color.white);
         colorPickup.put(13,Color.orange);
+        colorPickup.put(14,lemon);
     }
 
     public static Color getColor(int random) {

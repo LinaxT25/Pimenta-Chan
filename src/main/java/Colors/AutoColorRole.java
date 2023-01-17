@@ -36,7 +36,7 @@ public class AutoColorRole extends ListenerAdapter {
             }
         }catch(InsufficientPermissionException error) {
                 event.getGuild().getDefaultChannel().asStandardGuildMessageChannel()
-                        .sendMessage("I don't have menage roles permissions, senpai!").queue();
+                        .sendMessage("I don't have manage roles permissions, senpai!").queue();
                 event.getGuild().getDefaultChannel().asStandardGuildMessageChannel()
                         .sendMessage("Without permissions i can't change my color to a sexy red, senpai!!!").queue();
                 event.getGuild().getDefaultChannel().asStandardGuildMessageChannel()
