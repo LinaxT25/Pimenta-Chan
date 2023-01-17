@@ -29,9 +29,9 @@ public class CommandCall extends ListenerAdapter {
 
         commandList.add("ping");
         commandList.add("hello");
-        commandList.add("play");
-        commandList.add("stop");
-        commandList.add("next-track");
+        //commandList.add("play");
+        //commandList.add("stop");
+        //commandList.add("next-track");
         commandList.add("sexy-red");
         commandList.add("gelbooru");
     }
@@ -46,7 +46,7 @@ public class CommandCall extends ListenerAdapter {
         for (String s : commandList) {
             if (Objects.equals(s, eventListener.getName())) {
                 switch (s) {
-                    case "play":
+                   /* case "play":
                         playMusicGuilds.get(eventListener.getGuild()).playTrack(eventListener);
                         break;
                     case "next-track":
@@ -54,7 +54,7 @@ public class CommandCall extends ListenerAdapter {
                         break;
                     case "stop":
                         playMusicGuilds.get(eventListener.getGuild()).stopTrack(eventListener);
-                        break;
+                        break; */
                     case "ping":
                         Ping.ping(eventListener);
                         break;
