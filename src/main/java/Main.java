@@ -1,6 +1,5 @@
 import BD.DBConnection;
-import Colors.AutoColorRole;
-import Commands.Core.CommandCall;
+import Commands.CommandCall;
 import Events.GuildVoiceDisconnect;
 import Events.Mentions;
 import Events.Ready;
@@ -40,7 +39,6 @@ public class Main {
                              new CommandCall(bot),
                              new GuildVoiceDisconnect(bot),
                              new Mentions(),
-                             new AutoColorRole(),
                              new Ready()
         );
         bot.awaitReady();

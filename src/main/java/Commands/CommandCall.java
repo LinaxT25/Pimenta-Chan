@@ -1,4 +1,4 @@
-package Commands.Core;
+package Commands;
 
 import Commands.List.Hello;
 import Commands.List.Ping;
@@ -22,10 +22,13 @@ public class CommandCall extends ListenerAdapter {
     public CommandCall(JDA bot) {
         SlashCommands slashCommands = new SlashCommands(bot); //Updating all commands
 
+        //TODO Methods documentation
         //TODO Ban with time
         //TODO Auto commands
         //TODO Reverse image search
         //TODO Guild lock commands
+        //TODO Myanimelist recommendation
+        //TODO EcchiAru Searching
 
         commandList.add("ping");
         commandList.add("hello");
