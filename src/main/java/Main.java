@@ -3,7 +3,6 @@ import Commands.CommandCall;
 import Events.GuildVoiceDisconnect;
 import Events.Mentions;
 import Events.Ready;
-import Music.PlayerManager;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
@@ -20,7 +19,8 @@ public class Main {
                 GatewayIntent.GUILD_MESSAGES,
                 GatewayIntent.GUILD_MESSAGE_REACTIONS,
                 GatewayIntent.GUILD_VOICE_STATES,
-                GatewayIntent.GUILD_BANS
+                GatewayIntent.GUILD_MODERATION,
+                GatewayIntent.GUILD_EMOJIS_AND_STICKERS
         );
         token.disableCache(
                 CacheFlag.STICKER,
@@ -35,8 +35,7 @@ public class Main {
         token.setActivity(Activity.playing("\uD83C\uDF36 Pimenta-Chan \uD83C\uDF36"));
         token.setStatus(OnlineStatus.ONLINE);
         JDA bot = token.build();
-        bot.addEventListener(new PlayerManager(),
-                             new CommandCall(bot),
+        bot.addEventListener(new CommandCall(bot),
                              new GuildVoiceDisconnect(bot),
                              new Mentions(),
                              new Ready()

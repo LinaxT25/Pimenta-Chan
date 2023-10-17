@@ -12,13 +12,6 @@ public class SlashCommands  {
                         .setGuildOnly(true),
                 Commands.slash("hello", "Simple Greeting!")
                         .setGuildOnly(true),
-               /* Commands.slash("play","Play music from provided URL.")
-                        .setGuildOnly(true)
-                        .addOption(OptionType.STRING, "url", "Music URL.", true),
-                Commands.slash("stop", "Stop the track playing")
-                        .setGuildOnly(true),
-                Commands.slash("next-track","Next track from the queue.")
-                        .setGuildOnly(true), */
                 Commands.slash("sexy-red", "If bot doesn't have red color, use this.")
                         .setGuildOnly(true)
                         .setDefaultPermissions(DefaultMemberPermissions.DISABLED),
