@@ -1,4 +1,4 @@
-module Projects
+module github.com/LinaxT25/Pimenta-Chan
 
 go 1.21.3
 
