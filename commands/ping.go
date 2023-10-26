@@ -7,17 +7,16 @@ import (
 	"github.com/bwmarrin/discordgo"
 )
 
-func Ping(dg *discordgo.Session, i *discordgo.InteractionCreate) {
-	if i.ApplicationCommandData().Name == "ping" {
+func Ping(dg *discordgo.Session, ic *discordgo.InteractionCreate) {
+	if ic.ApplicationCommandData().Name == "ping" {
 		var t = time.Now()
-		dg.ChannelMessageSend(i.ChannelID, "Your latency is:")
-		te := time.Since(t).Microseconds()
-		dg.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
-			Type: discordgo.InteractionResponseChannelMessageWithSource,
-			Data: &discordgo.InteractionResponseData{
-				Content: fmt.Sprint(te),
-			},
+		dg.InteractionRespond(ic.Interaction, &discordgo.InteractionResponse{Type: discordgo.InteractionResponsePong})
+		var te = time.Since(t).Milliseconds()
+		rp := fmt.Sprint("Your latency is: ", te, " ms.")
+		dg.InteractionResponseEdit(ic.Interaction, &discordgo.WebhookEdit{
+			Content: &rp,
 		})
+
 	}
 }
 

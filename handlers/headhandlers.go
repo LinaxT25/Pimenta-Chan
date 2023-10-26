@@ -7,6 +7,6 @@ import (
 
 func HeadHandlers(dg *discordgo.Session) {
 
-	dg.AddHandler(commands.Ping)
+	dg.AddHandler(commands.ListeningInteractions)
 
 }
