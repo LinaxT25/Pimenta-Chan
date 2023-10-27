@@ -33,7 +33,7 @@ func main() {
 
 	dg.Identify.Intents = discordgo.IntentGuilds
 	dg.Identify.Intents = discordgo.IntentsGuildMessages
-	dg.Identify.Intents = discordgo.IntentsGuildBans
+	//dg.Identify.Intents = discordgo.IntentsGuildBans
 
 	dg.Identify.Presence.Game.Name = "🌶  Pimenta-Chan  🌶"
 	dg.Identify.Presence.Game.Type = 0
