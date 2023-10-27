@@ -45,10 +45,8 @@ func main() {
 		panic(err)
 	}
 
-	commands.SlashCommandsCreate(dg)
-
-	// Calling all handlers to listening.
-	handlers.HeadHandlers(dg)
+	commands.SlashCommandsCreate(dg) // Update & creating all slashing commands
+	handlers.HeadHandlers(dg)        // Calling all handlers to listening.
 
 	// Wait here until CTRL-C or other term signal is received.
 	fmt.Println("Bot is now running.  Press CTRL-C to exit.")
@@ -56,6 +54,5 @@ func main() {
 	signal.Notify(sc, syscall.SIGINT, syscall.SIGTERM, os.Interrupt)
 	<-sc
 
-	// Cleanly close down the Discord session.
 	dg.Close()
 }
