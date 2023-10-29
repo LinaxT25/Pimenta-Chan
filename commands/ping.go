@@ -7,20 +7,29 @@ import (
 	"github.com/bwmarrin/discordgo"
 )
 
-func Ping(dg *discordgo.Session, ic *discordgo.InteractionCreate) {
-	if ic.ApplicationCommandData().Name == "ping" {
-		var t = time.Now()
-		dg.InteractionRespond(ic.Interaction, &discordgo.InteractionResponse{Type: discordgo.InteractionResponsePong})
-		var te = time.Since(t).Milliseconds()
-		rp := fmt.Sprint("Your latency is: ", te, " ms.")
-		dg.InteractionResponseEdit(ic.Interaction, &discordgo.WebhookEdit{
-			Content: &rp,
-		})
+func PingCommand(dg *discordgo.Session, ic *discordgo.InteractionCreate) {
+	t := time.Now()
+	err := dg.InteractionRespond(ic.Interaction, &discordgo.InteractionResponse{Type: discordgo.InteractionResponsePong})
 
+	if err != nil {
+		fmt.Println("Caught error: ", err)
+		return
+	}
+
+	te := time.Since(t).Milliseconds()
+	rp := fmt.Sprint("Your latency is: ", te, " ms.")
+
+	msg, err := dg.InteractionResponseEdit(ic.Interaction, &discordgo.WebhookEdit{
+		Content: &rp,
+	})
+
+	if err != nil {
+		fmt.Println("Caught error: ", err, " sending:", &msg)
+		return
 	}
 }
 
-func GetPingCommand() *discordgo.ApplicationCommand {
+func Ping() *discordgo.ApplicationCommand {
 	var p = discordgo.ApplicationCommand{
 		Name:        "ping",
 		Description: "Return latency in ms.",

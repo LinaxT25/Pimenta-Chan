@@ -11,12 +11,11 @@ var cl []*discordgo.ApplicationCommand // Command list
 
 func SlashCommandsCreate(dg *discordgo.Session) {
 
-	cmd, err := dg.ApplicationCommandCreate(dg.State.User.ID, "", GetPingCommand())
+	cmd, err := dg.ApplicationCommandCreate(dg.State.User.ID, "", Ping())
 	cl = append(cl, cmd)
 
 	if err != nil {
-		fmt.Print(cmd)
-		panic(err)
+		fmt.Println("Caught error: ", err, " creating command: ", &cmd)
 	}
 
 }
@@ -24,7 +23,7 @@ func SlashCommandsCreate(dg *discordgo.Session) {
 func ListeningInteractions(dg *discordgo.Session, ic *discordgo.InteractionCreate) {
 	for i := 0; i < len(cl); i++ {
 		if cl[i].Name == "ping" {
-			Ping(dg, ic)
+			PingCommand(dg, ic)
 		}
 	}
 }
