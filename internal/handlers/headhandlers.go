@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"github.com/LinaxT25/Pimenta-Chan/commands"
+	"github.com/LinaxT25/Pimenta-Chan/internal/commands"
 	"github.com/bwmarrin/discordgo"
 )
 
